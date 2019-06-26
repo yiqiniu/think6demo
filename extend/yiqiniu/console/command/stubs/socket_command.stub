@@ -1,6 +1,6 @@
 <?php
 
-namespace app\command;
+namespace app\swoole\command;
 
 
 use think\console\Command;
@@ -20,7 +20,7 @@ class {%className%}Command extends Command
     ];
 
     //处理类
-    protected  $socket_class = '\app\service\{%className%}Service';
+    protected  $socket_class = '\app\swoole\service\{%className%}Service';
 
 
 }

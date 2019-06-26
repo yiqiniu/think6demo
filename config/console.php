@@ -18,6 +18,6 @@ return [
     // 指令定义
     'commands' => [
         'make:socket' => '\yiqiniu\console\command\SocketServer',
-        'app\command\TcpServerCommand'
+        'app\swoole\command\testCommand'
     ],
 ];

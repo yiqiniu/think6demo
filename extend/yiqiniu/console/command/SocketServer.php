@@ -54,17 +54,22 @@ class SocketServer extends Make
             $output->writeln('<error>' . $this->type . ':' . $classname . ' already exists!</error>');
             return false;
         }
-
         $apppath = $this->app->getAppPath();
-        $command_file = $apppath.'command\\'.ucfirst($name).'Command.php';
-        $service_file= $apppath.'service\\'.ucfirst($name).'Service.php';
+        $modulepath = $apppath.'swoole\\';
+
+        $command_file = $modulepath.'command\\'.ucfirst($name).'Command.php';
+        $service_file= $modulepath.'service\\'.ucfirst($name).'Service.php';
         $config_file = $this->app->getConfigPath().strtolower($name).'.php';
 
-        if(!file_exists($apppath.'command')){
-            mkdir($apppath.'command');
+
+       /* if(!file_exists($modulepath.'config')){
+            mkdir($modulepath.'config',0644,true);
+        }*/
+        if(!file_exists($modulepath.'command')){
+            mkdir($modulepath.'command',0644,true);
         }
-        if(!file_exists($apppath.'service')){
-            mkdir($apppath.'service');
+        if(!file_exists($modulepath.'service')){
+            mkdir($modulepath.'service',0644,true);
         }
 
         $this->getStub();

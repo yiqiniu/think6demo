@@ -54,6 +54,7 @@ trait CommandService
 
         // 获取配置文件名
         if (empty($this->config_file)) {
+
             $filename = strtolower(substr(strrchr(get_class($this), "\\"), 1));
 
             if (substr($filename, -7) == 'command') {
@@ -62,6 +63,8 @@ trait CommandService
                 $this->config_file = $filename;
             }
         }
+
+
 
 
         $this->config = $this->app->config->get($this->config_file);
