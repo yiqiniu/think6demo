@@ -87,8 +87,16 @@ abstract class BaseSocket
         $this->container = $container;
 
         $this->app = $this->container->make(App::class);
-        //默认的配置文件
-        $this->config_file = strtolower($this->app::classBaseName($this));
+        // 获取配置文件名
+        if (empty($this->config_file)) {
+            $filename = strtolower(substr(strrchr(get_class($this), "\\"), 1));
+
+            if (substr($filename, -7) == 'service') {
+                $this->config_file = substr($filename, 0, -7);
+            } else {
+                $this->config_file = $filename;
+            }
+        }
 
         $this->initialize();
 

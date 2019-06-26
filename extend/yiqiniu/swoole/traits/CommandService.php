@@ -63,13 +63,13 @@ trait CommandService
             }
         }
 
+
         $this->config = $this->app->config->get($this->config_file);
 
         if (empty($this->config)) {
             $this->output->error('> failure:load config file failure');
             exit;
         }
-
 
     }
 

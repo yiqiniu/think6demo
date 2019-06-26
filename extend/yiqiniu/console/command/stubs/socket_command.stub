@@ -8,7 +8,7 @@ use think\console\input\Argument;
 use yiqiniu\swoole\traits\CommandService;
 
 
-class {%commandName%}Command extends Command
+class {%className%}Command extends Command
 {
 
     use CommandService;
@@ -20,7 +20,7 @@ class {%commandName%}Command extends Command
     ];
 
     //处理类
-    protected  $socket_class = '\app\service\{%commandName%}';
+    protected  $socket_class = '\app\service\{%className%}Service';
 
 
 }

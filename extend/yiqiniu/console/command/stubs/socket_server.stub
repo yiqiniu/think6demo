@@ -8,7 +8,7 @@ use yiqiniu\facade\Logger;
 use yiqiniu\swoole\BaseSocket;
 
 
-class TcpServer extends BaseSocket
+class {%className%}Service extends BaseSocket
 {
 
 

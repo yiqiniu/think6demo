@@ -17,7 +17,7 @@ return [
     'user' => null,
     // 指令定义
     'commands' => [
-        'yqn:tcpserver' => '\app\command\TcpServerCommand',
-        'make:socket' => '\yiqiniu\console\command\SocketServer'
+        'make:socket' => '\yiqiniu\console\command\SocketServer',
+        'app\command\TcpServerCommand'
     ],
 ];
