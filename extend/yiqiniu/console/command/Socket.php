@@ -8,7 +8,7 @@ use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
 
-class SocketServer extends Make
+class Socket extends Make
 {
 
     protected $type = 'Command';
@@ -23,7 +23,7 @@ class SocketServer extends Make
     protected function configure()
     {
         parent::configure();
-        $this->setName('socketserver')
+        $this->setName('make:socket')
             ->addArgument('commandName', Argument::REQUIRED, "The name of the command")
             ->addArgument('port', Argument::REQUIRED, "socket Port Number ")
             ->setDescription('Create a new Socket Server command class');
