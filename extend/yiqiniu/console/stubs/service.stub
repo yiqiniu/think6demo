@@ -8,19 +8,19 @@ use think\console\input\Argument;
 use yiqiniu\swoole\traits\CommandService;
 
 
-class TcpServerCommand extends Command
+class {commandName}Command extends Command
 {
 
     use CommandService;
 
     // 命令参数
     protected $command = [
-        'name' => 'yqn:tcpServer',
+        'name' => 'yqn:{commandName}',
         'description' => 'Swoole HTTP Server for ThinkPHP',
     ];
 
     //处理类
-    protected  $socket_class = '\app\service\TcpServer';
+    protected  $socket_class = '\app\service\{commandName}';
 
 
 }

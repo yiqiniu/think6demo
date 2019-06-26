@@ -6,7 +6,7 @@
  * Time: 17:15
  */
 
-namespace yiqiniu\library;
+namespace yiqiniu\swoole;
 
 
 use Swoole\Http\Request;
@@ -20,7 +20,7 @@ use think\Exception;
 use think\helper\Str;
 
 use think\swoole\facade\Server;
-use yiqiniu\traits\InteractsWithSwooleTable;
+use yiqiniu\swoole\traits\InteractsWithSwooleTable;
 
 abstract class BaseSocket
 {

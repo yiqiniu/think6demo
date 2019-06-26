@@ -1,7 +1,7 @@
 <?php
 
 
-namespace yiqiniu\traits;
+namespace yiqiniu\swoole\traits;
 
 
 use Swoole\Process;
@@ -46,6 +46,11 @@ trait CommandService
      */
     protected function init()
     {
+
+        if (!extension_loaded('swoole')) {
+            $this->output->error('> no support swoole extension');
+            exit;
+        }
 
         // 获取配置文件名
         if (empty($this->config_file)) {

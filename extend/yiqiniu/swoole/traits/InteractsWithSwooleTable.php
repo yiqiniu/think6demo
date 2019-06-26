@@ -9,7 +9,7 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-namespace yiqiniu\traits;
+namespace yiqiniu\swoole\traits;
 
 use Swoole\Table as SwooleTable;
 use think\App;

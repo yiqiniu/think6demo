@@ -1,11 +1,12 @@
 <?php
 
 
-namespace app\admin\socket;
+namespace app\service;
 
 
 use yiqiniu\facade\Logger;
-use yiqiniu\library\BaseSocket;
+use yiqiniu\swoole\BaseSocket;
+
 
 class TcpServer extends BaseSocket
 {
