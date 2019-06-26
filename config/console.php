@@ -14,9 +14,10 @@
 // +----------------------------------------------------------------------
 return [
     // 执行用户（Windows下无效）
-    'user'     => null,
+    'user' => null,
     // 指令定义
     'commands' => [
-        'yqn:tcpserver'=>'\app\command\TcpServerCommand'
+        'yqn:tcpserver' => '\app\command\TcpServerCommand',
+        'make:socket' => '\yiqiniu\console\command\SocketServer'
     ],
 ];
