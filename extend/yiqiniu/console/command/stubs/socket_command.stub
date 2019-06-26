@@ -15,7 +15,7 @@ class {%className%}Command extends Command
 
     // 命令参数
     protected $command = [
-        'name' => 'yqn:{%commandName%}',
+        'name' => 'swoole:{%commandName%}',
         'description' => 'Swoole HTTP Server for ThinkPHP',
     ];
 
