@@ -57,18 +57,10 @@ class ModelAll extends Make
             $this->output->error('database not  setting.');
             return;
         }
-        if ($this->app->version()>'5.2.0'){
-            $tablelist = Db::connect($default)->table('information_schema.tables')
-                ->where('table_schema', $connect['database'])
-                ->field('table_name as name,table_comment as comment')
-                ->select();
-        }else{
-            $tablelist = \think\Db::connect($default ?: $connect)->table('information_schema.tables')
-                ->where('table_schema', $connect['database'])
-                ->field('table_name as name,table_comment as comment')
-                ->select();
-
-        }
+        $tablelist = Db::connect($default?:$connect)->table('information_schema.tables')
+            ->where('table_schema', $connect['database'])
+            ->field('table_name as name,table_comment as comment')
+            ->select();
         //select table_name,table_comment from information_schema.tables where table_schema='yiqiniu_new';
 
         // 获取数据库配置
