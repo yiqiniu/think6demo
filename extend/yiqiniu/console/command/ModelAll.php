@@ -28,6 +28,10 @@ class ModelAll extends Make
         'model' => 'model',
     ];
 
+    // 不能当做类名的表名
+
+    protected $keywords = ['Abstract','Class','Traits'];
+
     protected function configure()
     {
         $this->setName('make:modelall')
@@ -90,13 +94,14 @@ class ModelAll extends Make
 
         $model_stub = file_get_contents($stubs['model']);
 
+
         foreach ($tablelist as $k => $table) {
             $class_name = $this->app->parseName(substr($table['name'], $prefix_len), 1, true);
             // 如果是表名是class的改为ClassModel
 
             $tablename = '';
-            if ($class_name == 'Class') {
-                $class_name = 'ClassModel';
+            if (in_array($class_name, $this->keywords)) {
+                $class_name = $class_name.'Model';
                 $tablename = "protected \$name='" . substr($table['name'], $prefix_len) . "';";
             }
             $model_file = $dirname . $class_name . '.php';
