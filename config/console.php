@@ -17,7 +17,8 @@
  * 自定义命令
  */
 $custom_commands = [
-    '\yiqiniu\console\command\Socket'
+    '\yiqiniu\console\command\Socket',
+    '\yiqiniu\console\command\ModelAll'
 ];
 return [
     // 执行用户（Windows下无效）
