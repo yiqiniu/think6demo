@@ -4,11 +4,12 @@
 namespace yiqiniu\console\command;
 
 
+use think\App;
 use think\console\command\Make;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
-use think\facade\Db;
+use yiqiniu\facade\Db;
 
 /**
  * Class ModelAll
@@ -28,6 +29,7 @@ class ModelAll extends Make
         'model' => 'model',
     ];
 
+    protected $app=null;
     // 不能当做类名的表名
 
     protected $keywords = ['Abstract','Class','Traits'];
@@ -43,6 +45,7 @@ class ModelAll extends Make
     protected function execute(Input $input, Output $output)
     {
 
+        $this->app= App::getInstance();
         $default = $this->app->config->get('database.default', '');
         if (!empty($default)) {
             $connect = $this->app->config->get('database.connections.' . $default);
@@ -54,11 +57,19 @@ class ModelAll extends Make
             $this->output->error('database not  setting.');
             return;
         }
+        if ($this->app->version()>'5.2.0'){
+            $tablelist = Db::connect($default)->table('information_schema.tables')
+                ->where('table_schema', $connect['database'])
+                ->field('table_name as name,table_comment as comment')
+                ->select();
+        }else{
+            $tablelist = \think\Db::connect($default ?: $connect)->table('information_schema.tables')
+                ->where('table_schema', $connect['database'])
+                ->field('table_name as name,table_comment as comment')
+                ->select();
+
+        }
         //select table_name,table_comment from information_schema.tables where table_schema='yiqiniu_new';
-        $tablelist = Db::connect($default ?: $connect)->table('information_schema.tables')
-            ->where('table_schema', $connect['database'])
-            ->field('table_name as name,table_comment as comment')
-            ->select();
 
         // 获取数据库配置
         $name = trim($input->getArgument('m'));
@@ -72,7 +83,7 @@ class ModelAll extends Make
             mkdir($dirname, 0644, true);
         }
         // 获取生成空间的名称
-        $namespace = $this->getNamespace($name);
+        $namespace = $this->getNamespace2($name);
 
         // 判断 是否有基本BaseModel
 
@@ -96,7 +107,7 @@ class ModelAll extends Make
 
 
         foreach ($tablelist as $k => $table) {
-            $class_name = $this->app->parseName(substr($table['name'], $prefix_len), 1, true);
+            $class_name = $this->parseName(substr($table['name'], $prefix_len), 1, true);
             // 如果是表名是class的改为ClassModel
 
             $tablename = '';
@@ -122,10 +133,13 @@ class ModelAll extends Make
 
     }
 
-    protected function getNamespace(string $app): string
+    protected function getNamespace2($app)
     {
-        return parent::getNamespace($app) . '\\model';
+
+
+        return  empty($app)?'app\\model':'app\\'.$app.'\\model';
     }
+
 
     protected function getStub()
     {
@@ -135,5 +149,27 @@ class ModelAll extends Make
             $this->stubs[$key] = __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . $filename . '.stub';
         }
         return $this->stubs;
+    }
+
+
+    /**
+     * 字符串命名风格转换
+     * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格
+     * @access public
+     * @param string  $name    字符串
+     * @param integer $type    转换类型
+     * @param bool    $ucfirst 首字母是否大写（驼峰规则）
+     * @return string
+     */
+    public static function parseName($name = null, $type = 0, $ucfirst = true)
+    {
+        if ($type) {
+            $name = preg_replace_callback('/_([a-zA-Z])/', function ($match) {
+                return strtoupper($match[1]);
+            }, $name);
+            return $ucfirst ? ucfirst($name) : lcfirst($name);
+        }
+
+        return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
     }
 }
