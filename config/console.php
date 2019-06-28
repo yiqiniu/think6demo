@@ -12,19 +12,10 @@
 // +----------------------------------------------------------------------
 // | 控制台配置
 // +----------------------------------------------------------------------
-
-/**
- * 自定义命令
- */
-$custom_commands = [
-    '\yiqiniu\console\command\Socket',
-    '\yiqiniu\console\command\ModelAll'
-];
 return [
     // 执行用户（Windows下无效）
-    'user' => null,
+    'user'     => null,
     // 指令定义
-    'commands' => array_merge($custom_commands, [
-
-    ]),
+    'commands' => [
+    ],
 ];
