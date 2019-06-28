@@ -1,5 +1,5 @@
 {
-    "name": "topthink/think",
+    "name": "yiqiniu/think",
     "description": "the new thinkphp framework",
     "type": "project",
     "keywords": [
@@ -19,9 +19,11 @@
         "php": ">=7.1.0",
         "topthink/framework": "6.0.*-dev",
         "topthink/think-view": "^1.0",
-        "symfony/var-dumper":"^4.2",
         "liz/flysystem-qiniu": "^1.10",
         "topthink/think-swoole": "^3.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.2"
     },
     "autoload": {
         "psr-4": {
