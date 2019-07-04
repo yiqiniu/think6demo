@@ -7,6 +7,7 @@ namespace yiqiniu;
 use think\Route;
 use yiqiniu\console\command\ModelAll;
 use yiqiniu\console\command\Socket;
+use yiqiniu\console\command\ValidateAll;
 use yiqiniu\filesystem\Oss;
 use yiqiniu\filesystem\Qiniu;
 
@@ -22,7 +23,8 @@ class Service extends \think\Service
     {
         $this->commands([
             Socket::class,
-            ModelAll::class
+            ModelAll::class,
+            ValidateAll::class
         ]);
     }
 }

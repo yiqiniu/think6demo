@@ -59,13 +59,4 @@ class Job1 extends Job
         echo 'task3'."\r\n";
         print_r($data);
     }
-
-   /* public function failed($data, \Exception $e){
-
-        echo 'task3'."\r\n";
-        print_r($data);
-        echo $e->getMessage()."\r\n";
-
-
-    }*/
 }
