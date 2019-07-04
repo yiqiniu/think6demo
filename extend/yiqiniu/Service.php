@@ -20,7 +20,9 @@ class Service extends \think\Service
 
     public function boot(Route $route)
     {
-        $this->commands(Socket::class);
-        $this->commands(ModelAll::class);
+        $this->commands([
+            Socket::class,
+            ModelAll::class
+        ]);
     }
 }
