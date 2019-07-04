@@ -89,7 +89,7 @@ class ValidateAll extends Make
         $model_stub = file_get_contents($stubs['validate']);
 
         // table 类用于获取字段
-        $dbs = Db::connect($default ?: $connect);
+        $dbs = Db::connect($default ?: $connect)->getConnection();
 
         foreach ($tablelist as $k => $table) {
             $class_name = $this->parseName(substr($table['name'], $prefix_len), 1, true);
