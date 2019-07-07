@@ -107,7 +107,7 @@ class MakeFacade extends Make
                 }
             }
 
-
+            // 方法注解的格式
             $method_format = " * @method %s %s(%s) static %s \r\n";
             $method_str = '';
             foreach ($funs as $fun) {
@@ -116,9 +116,9 @@ class MakeFacade extends Make
 
             // 获取生成空间的名称
             $namespace = $this->getNamespace2($module_name);
-
+            // 获取基本的类名
             $base_class_name = $this->classBaseName($class_name);
-
+            // 判断目录是否存在
             $apppath = $this->app->getAppPath();
             if (!empty($module_name)) {
                 $dirname = $apppath . $module_name . '\\facade\\';
@@ -128,13 +128,11 @@ class MakeFacade extends Make
             if (!file_exists($dirname)) {
                 mkdir($dirname, 0644, true);
             }
-            // 判断 是否有基本BaseModel
-
+            // 获取stub代码
             $stubs = $this->getStub();
 
-
             $facade_stub = file_get_contents($stubs['facade']);
-
+            // 写入文件
             $model_file = $dirname . $base_class_name . '.php';
             if (!file_exists($model_file)) {
                 file_put_contents($model_file, str_replace(['{%namespace%}', '{%className%}', ' {%methods%}', '{%fullclassname}'], [
@@ -144,8 +142,6 @@ class MakeFacade extends Make
                     $class_name
                 ], $facade_stub));
             }
-
-            //dump($method_str);
 
             $output->writeln('<info>' . $this->type . ':' . 'Facede Class created successfully.</info>');
 
