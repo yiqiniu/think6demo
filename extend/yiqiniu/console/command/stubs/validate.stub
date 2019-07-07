@@ -12,7 +12,7 @@ use think\Validate;
  * {%comment%}
  */
 
-class {%className%}Vaild extends Validate
+class {%className%}Valid extends Validate
 {
 
     /**

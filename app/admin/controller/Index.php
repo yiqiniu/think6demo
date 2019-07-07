@@ -3,10 +3,9 @@
 namespace app\admin\controller;
 
 use app\BaseController;
-use app\admin\model\WeixinMenu;
+use ReflectionClass;
+use think\App;
 use think\facade\Filesystem;
-use yiqiniu\facade\Db;
-use yiqiniu\facade\Logger;
 
 
 class Index extends BaseController
@@ -20,19 +19,19 @@ class Index extends BaseController
      */
     public function index()
     {
-       /* $list = Db::name('weixin_menu')->selectArray();
+        /* $list = Db::name('weixin_menu')->selectArray();
 
 
-        $list2 = WeixinMenu::where("status", 1)->selectArray();
-        $list3 = WeixinMenu::test();
+         $list2 = WeixinMenu::where("status", 1)->selectArray();
+         $list3 = WeixinMenu::test();
 
-        Logger::log($list);
-        dump($list2);
-        exit;*/
+         Logger::log($list);
+         dump($list2);
+         exit;*/
 
         //return view();
-        $data=['username'=>'111','password'=>'22222'];
-        queue('app\\admin\\queue\\Job1@task1',$data);
+        $data = ['username' => '111', 'password' => '22222'];
+        queue('app\\admin\\queue\\Job1@task1', $data);
 
         echo time();
         //queue('app\\admin\\queue\\Job1@task2',$data);
@@ -46,23 +45,102 @@ class Index extends BaseController
     {
         //return 'hello,' . $name;
 
-     /*   $data=['username'=>'111','password'=>'22222'];
-        queue('app\\admin\\queue\\Job1@task1',$data);
-        queue('app\\admin\\queue\\Job1@task2',$data);
-        queue('app\\admin\\queue\\Job1@task3',$data);*/
+        /*   $data=['username'=>'111','password'=>'22222'];
+           queue('app\\admin\\queue\\Job1@task1',$data);
+           queue('app\\admin\\queue\\Job1@task2',$data);
+           queue('app\\admin\\queue\\Job1@task3',$data);*/
     }
 
 
-    public function upload(){
+    public function upload()
+    {
 
-        if($this->request->isPost()){
+        if ($this->request->isPost()) {
             // 获取表单上传文件 例如上传了001.jpg
             $file = request()->file('image');
             // 上传到本地服务器
-            $savename = Filesystem::putFile( 'topic', $file);
+            $savename = Filesystem::putFile('topic', $file);
             dump($savename);
             return;
         }
+
+    }
+
+    public function facade()
+    {
+        try {
+
+            $class_name = 'yiqiniu\library\Redis';
+
+            $baseClass = App::classBaseName($class_name);
+
+            // 解析当前类
+            $ref = new ReflectionClass($class_name);
+            $methods = $ref->getMethods();
+            $funs = [];
+            //解决类的所有public方法
+            foreach ($methods as $method) {
+                // 排除特殊的方法
+                if (substr($method->name, 0, 2) == '__')
+                    continue;
+                if ($method->isPublic()) {
+                    // 获取注释内容
+                    $doccomment = $method->getDocComment();
+                    $doccomment = str_replace("\r\n","\n",$doccomment);
+                    if (strpos($doccomment, "\n") !== false) {
+                        $doc = explode("\n", $method->getDocComment())[1];
+                    } else {
+                        $doc = $method->getDocComment();
+                    }
+                    $funs[$method->name]['comment'] = str_replace(' * ', '', $doc);
+                    //函数名称
+                    $funs[$method->name]['name'] = $method->getName();
+                    // 返回值
+                    $returnType = $method->getReturnType();
+                    $funs[$method->name]['return'] = empty($returnType) ? 'mixed' : $returnType->getName();
+                    // 参数
+                    $parameters = $method->getParameters();
+                    $parameter_str = '';
+                    $usedefault = false;
+                    foreach ($parameters as $k => $param) {
+                        $param_name = $param->name;
+                        $type = $param->getType();
+                        $param_type = empty($type) ? '' : $type->getName();
+                        $param_default = '';
+                        // 参数模板值
+                        if ($param->isOptional()) {
+                            $param_default = $param->getDefaultValue();
+                            if ($param_type == 'bool' && !empty($param_default)) {
+                                $param_default = $param_default ? 'true' : 'false';
+                            }
+                        }
+
+                        if (empty($param_default) && $usedefault == false) {
+                            $parameter_str .= $param_type . ' $' . $param_name . ',';
+                        } else {
+                            $param_default = empty($param_default) ? " ''" : $param_default;
+                            $parameter_str .= $param_type . ' $' . $param_name . ' = ' . $param_default . ',';
+                            $usedefault = true;
+                        }
+
+                    }
+                    $funs[$method->name]['args'] = substr($parameter_str, 0, -1);
+                }
+            }
+
+
+            $method_format = "\t* @method %s %s(%s) static %s \r\n";
+            $method_str = '';
+            foreach ($funs as $fun){
+                $method_str .= sprintf($method_format,$fun['return'],$fun['name'],$fun['args'],$fun['comment']);
+            }
+            dump($method_str);
+
+        } catch (\ReflectionException $e) {
+
+            dump($e);
+        }
+
 
     }
 }
