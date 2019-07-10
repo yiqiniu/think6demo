@@ -13,9 +13,9 @@ class WeixinMenu extends BaseModel
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public static function test(){
+    public function test(){
 
-        self::selectArray();
+        return self::selectArray();
     }
 
 }

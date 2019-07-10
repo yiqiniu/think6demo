@@ -2,10 +2,13 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\WeixinMenu;
 use app\BaseController;
 use ReflectionClass;
 use think\App;
 use think\facade\Filesystem;
+use yiqiniu\facade\Db;
+use yiqiniu\facade\Logger;
 
 
 class Index extends BaseController
@@ -19,21 +22,25 @@ class Index extends BaseController
      */
     public function index()
     {
-        /* $list = Db::name('weixin_menu')->selectArray();
+         $list = Db::name('weixin_menu')->selectArray();
 
 
          $list2 = WeixinMenu::where("status", 1)->selectArray();
-         $list3 = WeixinMenu::test();
+
+
+         $list3 = (new WeixinMenu)->test();
 
          Logger::log($list);
-         dump($list2);
-         exit;*/
+         //dump($list2);
+
+         dump($list3);
+         exit;
 
         //return view();
-        $data = ['username' => '111', 'password' => '22222'];
-        queue('app\\admin\\queue\\Job1@task1', $data);
+      //  $data = ['username' => '111', 'password' => '22222'];
+        //queue('app\\admin\\queue\\Job1@task1', $data);
 
-        echo time();
+        //echo time();
         //queue('app\\admin\\queue\\Job1@task2',$data);
         //queue('app\\admin\\queue\\Job1@task3',$data);
 
